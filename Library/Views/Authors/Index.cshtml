@@ -1,0 +1,25 @@
+@{
+  Layout = "_Layout";
+}
+
+@using Library.Models
+@model IEnumerable<Library.Models.Author>
+
+<h1>Author List</h1>
+
+@if(Model.Any())
+{
+  <ul>
+  @foreach(Author author in Model)
+  {
+    <li>@Html.ActionLink($"{author.FullName}", "Details", new { id = author.AuthorId })</li>
+  }
+  </ul>
+}
+else
+{
+  <h3>No authors have been added yet.</h3>
+}
+
+<h3>@Html.ActionLink("Add new author", "Create")</h3>
+<h3>@Html.ActionLink("Home", "Index", "Home")</h3>

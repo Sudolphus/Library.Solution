@@ -1,0 +1,21 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Library.Models.Author
+
+<h1>Edit Author</h1>
+
+<h3>@Html.DisplayFor(model => model.FullName)</h3>
+
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.AuthorId)
+  @Html.LabelFor(model => model.FirstName)
+  @Html.TextBoxFor(model => model.FirstName)
+  @Html.LabelFor(model => model.LastName)
+  @Html.TextBoxFor(model => model.LastName)
+  <input type="submit" value="Edit" class="btn-outline-primary" />
+}
+
+<h5>@Html.ActionLink("Back to Author list", "Index")</h5>

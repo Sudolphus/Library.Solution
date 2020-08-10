@@ -9,9 +9,9 @@
 
 <h3>@Model.Title</h3>
 
-@foreach(Author author in Model.Authors)
+@foreach(AuthorBook join in Model.Authors)
 {
-  <h4>@Html.ActionLink($"{author.FullName}", "Details", "Authors", new { id = author.AuthorId })</h4>
+  <h4>@Html.ActionLink($"{join.Author.FullName}", "Details", "Authors", new { id = join.Author.AuthorId })</h4>
 }
 
 <p>@Html.ActionLink("Book Index", "Index")</p>
