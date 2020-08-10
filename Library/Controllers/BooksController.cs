@@ -53,7 +53,40 @@ namespace Library.Controllers
     public ActionResult Details(int id)
     {
       Book book = _db.Books
-        .Include 
+        .Include(books => books.Authors)
+        .ThenInclude(join => join.Author)
+        .Include(books => books.Copies);
+      return View(book);
+    }
+
+    public ActionResult Edit(int id)
+    {
+      Book book = _db.Books.First(books => books.BookId == id);
+      ViewBag.AuthorId = new MultiSelectList(_db.Authors, "AuthorId", "FullName");
+      return View(book);
+    }
+
+    [HttpPost]
+    public ActionResult Edit(Book book)
+    {
+      _db.Entry(book).State = EntityState.Modified;
+      _db.SaveChanges();
+      return RedirectToAction("Details", new { id = book.BookId });
+    }
+
+
+    public ActionResult Delete(int id)
+    {
+      Book book = _db.Books.First(books => books.BookId == id);
+      return View(book);
+    }
+
+    [HttpPost]
+    public ActionResult Delete(Book book)
+    {
+      _db.Books.Remove(book);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
     }
   }
 }
