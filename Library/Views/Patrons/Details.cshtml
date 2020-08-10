@@ -1,0 +1,13 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Library.Models.Patron
+
+<h1>Patron Details</h1>
+<h3>@Model.FullName</h3>
+@foreach(var join in Model.Books)
+{
+  <h4>@Html.ActionLink($"{join.Book.Title}", "Details", "Books", new { id = join.Book.BookId })</h4>
+}
+<h5>@Html.ActionLink("Back to patron list", "Index")</h5>
