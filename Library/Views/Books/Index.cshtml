@@ -1,0 +1,38 @@
+@{
+  Layout = "_Layout";
+}
+
+@using Library.Models
+@model IEnumerable<Library.Models.Book>
+
+<h1>Books List</h1>
+
+@if(Model.Any())
+{
+  <form asp-controller="Books" asp-action="Index">
+    <label for="title">Filter By Title:</label>
+    <input name="title" id="title" type="search" placeholder="Title" />
+    <label for="author">Filter By Author:</label>
+    <input name="author" id="author" type="search" placeholder="Author" />
+    <input type="submit" value="Filter" class="btn btn-info" />
+  </form>
+  <ul>
+    @foreach(Book book in Model)
+    {
+      <li>
+        @Html.ActionLink($"{book.Title}", "Details", new { id = book.BookId }) by
+        @foreach(Author author in book.Authors)
+        {
+          author.FullName + " "
+        }
+      </li>
+    }
+  </ul>
+}
+else
+{
+  <h3>No books have been added yet.</h3>
+}
+
+<h3>@Html.ActionLink("Add new book", "Create")</h3>
+<h3>@Html.ActionLink("Home", "Index", "Home")</h3>

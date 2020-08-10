@@ -1,0 +1,17 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Library.Models.Book
+
+<h2>Add a new Book</h2>
+
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(book => book.Title)
+  @Html.TextBoxFor(book => book.Title)
+  @Html.LabelFor(book => book.Authors)
+  @Html.ListBoxfor(book => book.Authors, ViewBag.AuthorId)
+  <input type="submit" value="Add book" class="btn btn-outline-dark" />
+}
+<h5>@Html.ActionLink("See all books", "Index")</h5>
