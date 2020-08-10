@@ -10,8 +10,8 @@
 {
   @Html.LabelFor(book => book.Title)
   @Html.TextBoxFor(book => book.Title)
-  @Html.LabelFor(book => book.Authors)
-  @Html.ListBoxfor(book => book.Authors, ViewBag.AuthorId)
+  @Html.Label("Add An Author")
+  @Html.DropDownList("AuthorId")
   <input type="submit" value="Add book" class="btn btn-outline-dark" />
 }
 <h5>@Html.ActionLink("See all books", "Index")</h5>

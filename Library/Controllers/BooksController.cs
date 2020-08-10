@@ -17,35 +17,39 @@ namespace Library.Controllers
       _db = db;
     }
 
-    public ActionResult Index(string title, string author)
+    public ActionResult Index(string title)
     {
       IQueryable<Book> bookQuery = _db.Books
         .Include(books => books.Authors)
-        .ThenInclude(join => join.Author);
+        .ThenInclude(join => join.Author)
+        .Include(books => books.Copies);
       if (!string.IsNullOrEmpty(title))
       {
         Regex titleSearch = new Regex(title, RegexOptions.IgnoreCase);
         bookQuery = bookQuery.Where(books => titleSearch.IsMatch(books.Title));
       }
-      if (!string.IsNullOrEmpty(author))
-      {
-        Regex authorSearch = new Regex(author, RegexOptions.IgnoreCase);
-        bookQuery = bookQuery.Where(books => authorSearch.IsMatch(books.Authors.Author.FirstName) || authorSearch.IsMatch(books.Authors.Author.LastName));
-      }
-      IEnumerable<Book> bookList = bookQuery.ToList().OrderBy(books => books.Title);
+      IEnumerable<Book> bookList = bookQuery
+        .ToList()
+        .OrderBy(books => books.Title);
       return View(bookList);
     }
 
     public ActionResult Create()
     {
-      ViewBag.AuthorId = new MultiSelectList(_db.Authors, "AuthorId", "FullName");
+      ViewBag.AuthorId = new SelectList(_db.Authors, "AuthorId", "FullName");
       return View();
     }
 
     [HttpPost]
-    public ActionResult Create(Book book)
+    public ActionResult Create(Book book, int AuthorId)
     {
-      _db.Books.Add(book);
+      if (AuthorId != 0)
+      {
+        _db.AuthorBook.Add(new AuthorBook() { BookId = book.BookId, AuthorId = AuthorId });
+      }
+      Copy copy = new Copy() { Number = 1};
+      _db.Copies.Add(copy);
+      book.CopyId = 
       _db.SaveChanges();
       return RedirectToAction("Details", new { id = book.BookId });
     }
@@ -55,20 +59,25 @@ namespace Library.Controllers
       Book book = _db.Books
         .Include(books => books.Authors)
         .ThenInclude(join => join.Author)
-        .Include(books => books.Copies);
+        .Include(books => books.Copies)
+        .First(b => b.BookId == id);
       return View(book);
     }
 
     public ActionResult Edit(int id)
     {
       Book book = _db.Books.First(books => books.BookId == id);
-      ViewBag.AuthorId = new MultiSelectList(_db.Authors, "AuthorId", "FullName");
+      ViewBag.AuthorId = new SelectList(_db.Authors, "AuthorId", "FullName");
       return View(book);
     }
 
     [HttpPost]
-    public ActionResult Edit(Book book)
+    public ActionResult Edit(Book book, int AuthorId)
     {
+      if (AuthorId != 0)
+      {
+        _db.AuthorBook.Add(new AuthorBook() { BookId = book.BookId, AuthorId = AuthorId });
+      }
       _db.Entry(book).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Details", new { id = book.BookId });

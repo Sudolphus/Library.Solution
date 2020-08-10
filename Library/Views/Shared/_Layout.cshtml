@@ -12,7 +12,9 @@
       </div>
 
       <div class="navigator">
-
+        @Html.ActionLink("View Books", "Index", "Books")
+        @Html.ActionLink("View Authors", "Index", "Authors")
+        @Html.ActionLink("View Patrons", "Index", "Patrons")
       </div>
 
       @RenderBody()
