@@ -13,6 +13,8 @@
   @Html.HiddenFor(model => model.BookId)
   @Html.LabelFor(model => model.Title)
   @Html.TextBoxFor(model => model.Title)
+  @Html.LabelFor(model => model.Number);
+  @Html.TextBoxFor(model => model.Number, new { @type="number"})
   @Html.Label("Add an Author: ")
   @Html.DropDownList("AuthorId")
   <input type="submit" value="Edit" class="btn btn-outline-light" />

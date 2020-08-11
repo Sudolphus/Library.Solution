@@ -21,8 +21,7 @@ namespace Library.Controllers
     {
       IQueryable<Book> bookQuery = _db.Books
         .Include(books => books.Authors)
-        .ThenInclude(join => join.Author)
-        .Include(books => books.Copies);
+        .ThenInclude(join => join.Author);
       if (!string.IsNullOrEmpty(title))
       {
         Regex titleSearch = new Regex(title, RegexOptions.IgnoreCase);
@@ -47,9 +46,7 @@ namespace Library.Controllers
       {
         _db.AuthorBook.Add(new AuthorBook() { BookId = book.BookId, AuthorId = AuthorId });
       }
-      Copy copy = new Copy() { Number = 1};
-      _db.Copies.Add(copy);
-      book.CopyId = 
+      book.Number = 1;
       _db.SaveChanges();
       return RedirectToAction("Details", new { id = book.BookId });
     }
@@ -59,7 +56,7 @@ namespace Library.Controllers
       Book book = _db.Books
         .Include(books => books.Authors)
         .ThenInclude(join => join.Author)
-        .Include(books => books.Copies)
+        .Include(books => books.Number)
         .First(b => b.BookId == id);
       return View(book);
     }
