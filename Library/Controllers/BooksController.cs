@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -94,6 +95,21 @@ namespace Library.Controllers
       _db.Books.Remove(book);
       _db.SaveChanges();
       return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public ActionResult Checkout(Book book, Patron patron)
+    {
+      if (book.Number == 0)
+      {
+        return RedirectToAction("Details", new { id = book.BookId });
+      }
+      book.Number--;
+      DateTime current = DateTime.Now;
+      DateTime due = current.Add(new TimeSpan(14, 0, 0, 0));
+      _db.BookPatron.Add(new BookPatron(){BookId = book.BookId, PatronId = patron.PatronId, Returned = false, DueDate = due});
+      _db.SaveChanges();
+      return RedirectToAction("Details", "Patrons", new { id = patron.PatronId });
     }
   }
 }

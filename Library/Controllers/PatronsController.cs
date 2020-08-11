@@ -53,6 +53,16 @@ namespace Library.Controllers
         .Include(patrons => patrons.Books)
         .ThenInclude(join => join.Book)
         .First(patrons => patrons.PatronId == id);
+      IEnumerable<BookPatron> booksCheckedOut = patron.Books
+        .Where(books => books.Returned == false)
+        .OrderBy(books => books.DueDate)
+        .ThenBy(books => books.Book.Title);
+      IEnumerable<BookPatron> bookHistory = patron.Books
+        .Where(books => books.Returned == true)
+        .OrderBy(books => books.DueDate)
+        .ThenBy(books => books.Book.Title);
+      ViewBag.Checkouts = booksCheckedOut;
+      ViewBag.History = bookHistory;
       return View(patron);
     }
 

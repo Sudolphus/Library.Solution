@@ -1,3 +1,5 @@
+using System;
+
 namespace Library.Models
 {
   public class BookPatron
@@ -7,5 +9,7 @@ namespace Library.Models
     public int? PatronId { get; set; }
     public Book Book { get; set; }
     public Patron Patron { get; set; }
+    public DateTime DueDate { get; set; }
+    public bool Returned { get; set; }
   }
 }

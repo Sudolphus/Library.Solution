@@ -6,7 +6,7 @@
 @model IEnumerable<Library.Models.Patron>
 
 <h1>Patron List</h1>
-
+<hr>
 @if(Model.Any())
 {
   <ul>
@@ -20,6 +20,6 @@ else
 {
   <h3>No patrons have been added yet.</h3>
 }
-
+<hr>
 <h3>@Html.ActionLink("Add new patron", "Create")</h3>
 <h3>@Html.ActionLink("Home", "Index", "Home")</h3>

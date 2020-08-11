@@ -10,11 +10,13 @@
 
 @using (Html.BeginForm())
 {
-  @Html.HiddenFor(model => model.PatronId)
-  @Html.LabelFor(model => model.FirstName)
-  @Html.TextBoxFor(model => model.FirstName)
-  @Html.LabelFor(model => model.LastName)
-  @Html.TextBoxFor(model => model.LastName)
+  <div class="form-group">
+    @Html.HiddenFor(model => model.PatronId)
+    @Html.LabelFor(model => model.FirstName, new {@class="form-control"})
+    @Html.TextBoxFor(model => model.FirstName)
+    @Html.LabelFor(model => model.LastName)
+    @Html.TextBoxFor(model => model.LastName, new {@class="form-control"})
+  </div>
   <input type="submit" value="Edit" class="btn-outline-primary" />
 }
 
