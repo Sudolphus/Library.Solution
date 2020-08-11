@@ -111,5 +111,14 @@ namespace Library.Controllers
       _db.SaveChanges();
       return RedirectToAction("Details", "Patrons", new { id = patron.PatronId });
     }
+
+    [HttpPost]
+    public ActionResult Checkin(BookPatron checkoutRecord)
+    {
+      checkoutRecord.Returned = true;
+      checkoutRecord.Book.Number++;
+      _db.SaveChanges();
+      return RedirectToAction("Details", "Patrons", new { id = checkoutRecord.Patron.PatronId });
+    }
   }
 }

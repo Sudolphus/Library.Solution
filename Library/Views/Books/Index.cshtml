@@ -6,14 +6,14 @@
 @model IEnumerable<Library.Models.Book>
 
 <h1>Books List</h1>
-
+<hr>
 @if(Model.Any())
 {
-  <form asp-controller="Books" asp-action="Index">
+  <form class="form-group" asp-controller="Books" asp-action="Index">
     <label for="title">Filter By Title:</label>
-    <input name="title" id="title" type="search" placeholder="Title" />
+    <input name="title" id="title" type="search" placeholder="Title" class="form-control" />
     <label for="author">Filter By Author:</label>
-    <input name="author" id="author" type="search" placeholder="Author" />
+    <input name="author" id="author" type="search" placeholder="Author" class="form-control"/>
     <input type="submit" value="Filter" class="btn btn-info" />
   </form>
   <ul>
@@ -33,6 +33,6 @@ else
 {
   <h3>No books have been added yet.</h3>
 }
-
+<hr>
 <h3>@Html.ActionLink("Add new book", "Create")</h3>
 <h3>@Html.ActionLink("Home", "Index", "Home")</h3>

@@ -8,15 +8,33 @@
 <h1>Patron Details</h1>
 <h3>@Model.FullName</h3>
 <h4>Books Checked Out: </h4>
-@if (ViewBag.Checkouts.Any())
+@if (ViewBag.CheckoutCount > 0)
 {
   <ul>
     @foreach(BookPatron checkout in ViewBag.Checkouts)
     {
-      <li>@Html.ActionLink($"{checkout.Book.Title}", "Details", "Books", new { id = checkout.Book.BookId }) | Due: checkout.</li>
+      <li>@Html.ActionLink($"{checkout.Book.Title}", "Details", "Books", new { id = checkout.Book.BookId }) | Due: @checkout.DueDate.Date</li>
     }
   </ul>
 }
+else
+{
+  <p>No Books checked out.</p>
+}
 
+<h4>History</h4>
+@if (ViewBag.HistoryCount > 0)
+{
+  <ul>
+    @foreach(BookPatron history in ViewBag.History)
+    {
+      <li>@Html.ActionLink($"{history.Book.Title}", "Details", "Books", new { id = history.Book.BookId}) | Returned: @history.DueDate.Date</li>
+    }
+  </ul>
+}
+else
+{
+  <p>No History to Display</p>
+}
 
 <h5>@Html.ActionLink("Back to patron list", "Index")</h5>

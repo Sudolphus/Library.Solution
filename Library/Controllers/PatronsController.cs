@@ -61,6 +61,8 @@ namespace Library.Controllers
         .Where(books => books.Returned == true)
         .OrderBy(books => books.DueDate)
         .ThenBy(books => books.Book.Title);
+      ViewBag.CheckoutCount = booksCheckedOut.Count();
+      ViewBag.HistoryCount = bookHistory.Count();
       ViewBag.Checkouts = booksCheckedOut;
       ViewBag.History = bookHistory;
       return View(patron);
