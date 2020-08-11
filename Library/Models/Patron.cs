@@ -12,6 +12,7 @@ namespace Library.Models
     public string FirstName { get; set; }
     public string LastName { get; set;}
     public string FullName { get; set; }
-    public ICollection<BookPatron> Books { get; set; } 
+    public ApplicationUser User { get; set; }
+    public ICollection<BookPatron> Books { get; set; }
   }
 }

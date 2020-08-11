@@ -1,36 +1,50 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Security.Claims;
 using Library.Models;
+
 
 namespace Library.Controllers
 {
+  [Authorize]
   public class PatronsController : Controller
   {
     private readonly LibraryContext _db;
-    public PatronsController(LibraryContext db)
+    private readonly UserManager<ApplicationUser> _userManager;
+    public PatronsController(LibraryContext db, UserManager<ApplicationUser> userManager)
     {
       _db = db;
+      _userManager = userManager;
     }
 
-    public ActionResult Index(string name)
+    // public ActionResult Index(string name)
+    // {
+    //   IQueryable<Patron> patronQuery = _db.Patrons
+    //     .Include(p => p.Books)
+    //     .ThenInclude(join => join.Book);
+    //   if (!string.IsNullOrEmpty(name))
+    //   {
+    //     Regex patronSearch = new Regex(name, RegexOptions.IgnoreCase);
+    //     patronQuery = patronQuery.Where(p => patronSearch.IsMatch(p.FullName));
+    //   }
+    //   IEnumerable<Patron> patronList = patronQuery
+    //     .ToList()
+    //     .OrderBy(p => p.LastName)
+    //     .ThenBy(p => p.FirstName);
+    //   return View(patronList);
+    // }
+    public async Task<ActionResult> Index()
     {
-      IQueryable<Patron> patronQuery = _db.Patrons
-        .Include(p => p.Books)
-        .ThenInclude(join => join.Book);
-      if (!string.IsNullOrEmpty(name))
-      {
-        Regex patronSearch = new Regex(name, RegexOptions.IgnoreCase);
-        patronQuery = patronQuery.Where(p => patronSearch.IsMatch(p.FullName));
-      }
-      IEnumerable<Patron> patronList = patronQuery
-        .ToList()
-        .OrderBy(p => p.LastName)
-        .ThenBy(p => p.FirstName);
-      return View(patronList);
+      var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      var currentUser = await _userManager.FindByIdAsync(userId);
+      return RedirectToAction("Details", new { id = currentUser.Id });
     }
 
     public ActionResult Create()

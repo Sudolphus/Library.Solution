@@ -35,6 +35,8 @@ namespace Library.Controllers
       IdentityResult result = await _userManager.CreateAsync(user, model.Password);
       if (result.Succeeded)
       {
+        _db.Patrons.Add(new Patron() { FirstName = model.FirstName, LastName = model.LastName, FullName = model.FirstName + " " + model.LastName, User = user });
+        _db.SaveChanges();
         return RedirectToAction("Index");
       }
       else
