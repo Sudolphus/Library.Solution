@@ -42,6 +42,7 @@ namespace Library.Controllers
     public ActionResult Create(Patron patron)
     {
       _db.Patrons.Add(patron);
+      patron.FullName = patron.FirstName + " " + patron.LastName;
       _db.SaveChanges();
       return RedirectToAction("Details", new { id = patron.PatronId });
     }
@@ -64,6 +65,7 @@ namespace Library.Controllers
     [HttpPost]
     public ActionResult Edit(Patron patron)
     {
+      patron.FullName = patron.FirstName + " " + patron.LastName;
       _db.Entry(patron).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Details", new { id = patron.PatronId });

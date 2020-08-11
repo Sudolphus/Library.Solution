@@ -7,7 +7,6 @@ namespace Library.Models
     public Patron()
     {
       this.Books = new HashSet<BookPatron>();
-      FullName = FirstName + " " + LastName;
     }
     public int PatronId { get; set; }
     public string FirstName { get; set; }
