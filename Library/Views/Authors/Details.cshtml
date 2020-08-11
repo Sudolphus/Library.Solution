@@ -10,4 +10,7 @@
 {
   <h4>@Html.ActionLink($"{join.Book.Title}", "Details", "Books", new { id = join.Book.BookId })</h4>
 }
+
+<h5>@Html.ActionLink("Edit This Author", "Edit", new { id = Model.AuthorId })
+<h5>@Html.ActionLink("Delete This Author", "Delete", new { id = Model.AuthorId })
 <h5>@Html.ActionLink("Back to Author list", "Index")</h5>

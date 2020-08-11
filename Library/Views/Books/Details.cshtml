@@ -16,3 +16,5 @@
 
 <h4>Number of Copies: @Model.Number</h4>
 <p>@Html.ActionLink("Book Index", "Index")</p>
+<p>@Html.ActionLink("Edit this Book", "Edit", new { id = Model.BookId })</p>
+<p>@Html.ActionLink("Delete this book", "Delete", new { id = Model.BookId })</p>

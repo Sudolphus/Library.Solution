@@ -40,11 +40,13 @@ namespace Library.Controllers
     }
 
     [HttpPost]
-    public ActionResult Create(Book book, int AuthorId)
+    public ActionResult Create(Book book, string AuthorId)
     {
-      if (AuthorId != 0)
+      _db.Books.Add(book);
+      int parseId = int.Parse(AuthorId);
+      if (parseId != 0)
       {
-        _db.AuthorBook.Add(new AuthorBook() { BookId = book.BookId, AuthorId = AuthorId });
+        _db.AuthorBook.Add(new AuthorBook() { BookId = book.BookId, AuthorId = parseId });
       }
       book.Number = 1;
       _db.SaveChanges();
@@ -56,7 +58,6 @@ namespace Library.Controllers
       Book book = _db.Books
         .Include(books => books.Authors)
         .ThenInclude(join => join.Author)
-        .Include(books => books.Number)
         .First(b => b.BookId == id);
       return View(book);
     }
