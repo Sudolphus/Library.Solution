@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Library.Models;
 using Library.ViewModels;
@@ -35,7 +38,8 @@ namespace Library.Controllers
       IdentityResult result = await _userManager.CreateAsync(user, model.Password);
       if (result.Succeeded)
       {
-        _db.Patrons.Add(new Patron() { FirstName = model.FirstName, LastName = model.LastName, FullName = model.FirstName + " " + model.LastName, User = user });
+        Patron patron = new Patron() { FirstName = model.FirstName, LastName = model.LastName, FullName = model.FirstName + " " + model.LastName, User = user };
+        _db.Patrons.Add(patron);
         _db.SaveChanges();
         return RedirectToAction("Index");
       }
@@ -56,6 +60,9 @@ namespace Library.Controllers
       Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: true, lockoutOnFailure: false);
       if (result.Succeeded)
       {
+        // var currentUser = await _userManager.GetUserAsync(User);
+        // Patron patron = _db.Patrons.First(p => p.User == currentUser);
+        // return RedirectToAction("Details", "Patrons", new { id = patron.PatronId });
         return RedirectToAction("Index");
       }
       else

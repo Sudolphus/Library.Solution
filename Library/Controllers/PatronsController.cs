@@ -44,7 +44,8 @@ namespace Library.Controllers
     {
       var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       var currentUser = await _userManager.FindByIdAsync(userId);
-      return RedirectToAction("Details", new { id = currentUser.Id });
+      Patron patron = _db.Patrons.First(p => p.User == currentUser);
+      return RedirectToAction("Details", new { id = patron.PatronId });
     }
 
     public ActionResult Create()
