@@ -120,5 +120,18 @@ namespace Library.Controllers
       _db.SaveChanges();
       return RedirectToAction("Details", "Patrons", new { id = checkoutRecord.Patron.PatronId });
     }
+
+    public ActionResult Overdue()
+    {
+      DateTime current = DateTime.Now;
+      IEnumerable<BookPatron> overdueBooks = _db.BookPatron
+        .Where(checkout => checkout.Returned == false)
+        .Where(checkout => checkout.DueDate < current)
+        .Include(checkout => checkout.Book)
+        .Include(checkout => checkout.Patron)
+        .ToList()
+        .OrderBy(checkout => checkout.DueDate);
+      return View(overdueBooks);
+    }
   }
 }
