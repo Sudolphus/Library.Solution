@@ -4,20 +4,22 @@
 
 @model Library.Models.Book
 
-<h1>Edit Book</h1>
-
+<h2>Edit Book</h2>
+<hr>
 <h3>@Html.DisplayFor(model => model.Title)</h3>
 
 @using (Html.BeginForm())
 {
-  @Html.HiddenFor(model => model.BookId)
-  @Html.LabelFor(model => model.Title)
-  @Html.TextBoxFor(model => model.Title)
-  @Html.LabelFor(model => model.Number);
-  @Html.TextBoxFor(model => model.Number, new { @type="number"})
-  @Html.Label("Add an Author: ")
-  @Html.DropDownList("AuthorId")
+  <div class="form-group">
+    @Html.HiddenFor(model => model.BookId)
+    @Html.LabelFor(model => model.Title)
+    @Html.TextBoxFor(model => model.Title, new {@class="form-control"})
+    @Html.LabelFor(model => model.Number)
+    @Html.TextBoxFor(model => model.Number, new { @type="number", @class="form-control"})
+    @Html.Label("Add an Author: ")
+    @Html.DropDownList("AuthorId", null, new {@class="form-control"})
+  </div>
   <input type="submit" value="Edit" class="btn btn-outline-light" />
 }
-
+<hr>
 <h5>@Html.ActionLink("Back to book list", "Index")</h5>

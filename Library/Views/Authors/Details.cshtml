@@ -4,13 +4,14 @@
 
 @model Library.Models.Author
 
-<h1>Author Details</h1>
+<h2>Author Details</h2>
+<hr>
 <h3>@Model.FullName</h3>
 @foreach(var join in Model.Books)
 {
   <h4>@Html.ActionLink($"{join.Book.Title}", "Details", "Books", new { id = join.Book.BookId })</h4>
 }
-
+<hr>
 <h5>@Html.ActionLink("Edit This Author", "Edit", new { id = Model.AuthorId })
 <h5>@Html.ActionLink("Delete This Author", "Delete", new { id = Model.AuthorId })
 <h5>@Html.ActionLink("Back to Author list", "Index")</h5>

@@ -4,18 +4,20 @@
 
 @model Library.Models.Author
 
-<h1>Edit Author</h1>
-
+<h2>Edit Author</h2>
+<hr>
 <h3>@Html.DisplayFor(model => model.FullName)</h3>
 
 @using (Html.BeginForm())
 {
-  @Html.HiddenFor(model => model.AuthorId)
-  @Html.LabelFor(model => model.FirstName)
-  @Html.TextBoxFor(model => model.FirstName)
-  @Html.LabelFor(model => model.LastName)
-  @Html.TextBoxFor(model => model.LastName)
+  <div class="form-group">
+    @Html.HiddenFor(model => model.AuthorId)
+    @Html.LabelFor(model => model.FirstName)
+    @Html.TextBoxFor(model => model.FirstName, new {@class="form-control"})
+    @Html.LabelFor(model => model.LastName)
+    @Html.TextBoxFor(model => model.LastName, new {@class="form-control"})
+  </div>
   <input type="submit" value="Edit" class="btn-outline-primary" />
 }
-
+<hr>
 <h5>@Html.ActionLink("Back to Author list", "Index")</h5>

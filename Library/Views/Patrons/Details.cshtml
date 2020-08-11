@@ -5,7 +5,7 @@
 @using Library.Models
 @model Library.Models.Patron
 
-<h1>Patron Details</h1>
+<h2>Patron Details</h2>
 <h3>@Model.FullName</h3>
 <h4>Books Checked Out: </h4>
 @if (ViewBag.CheckoutCount > 0)
@@ -38,3 +38,4 @@ else
 }
 
 <h5>@Html.ActionLink("Back to patron list", "Index")</h5>
+<h5>@Html.ActionLink("Delete this patron", "Delete", new { id = Model.PatronId })</h5>

@@ -5,13 +5,16 @@
 @model Library.Models.Book
 
 <h2>Add a new Book</h2>
-
+<hr>
 @using (Html.BeginForm())
 {
-  @Html.LabelFor(book => book.Title)
-  @Html.TextBoxFor(book => book.Title)
-  @Html.Label("Add An Author")
-  @Html.DropDownList("AuthorId")
+  <div class="form-group">
+    @Html.LabelFor(book => book.Title)
+    @Html.TextBoxFor(book => book.Title, new {@class="form-control"})
+    @Html.Label("Add An Author")
+    @Html.DropDownList("AuthorId", null, new {@class="form-control"})
+  </div>
   <input type="submit" value="Add book" class="btn btn-outline-dark" />
 }
+<hr>
 <h5>@Html.ActionLink("See all books", "Index")</h5>

@@ -5,14 +5,16 @@
 @model Library.Models.Author
 
 <h2>Add a new Author</h2>
-
+<hr>
 @using (Html.BeginForm())
 {
-  @Html.LabelFor(a => a.FirstName)
-  @Html.TextBoxFor(a => a.FirstName)
-  @Html.LabelFor(a => a.LastName)
-  @Html.TextBoxFor(a => a.LastName)
+  <div class="form-group">
+    @Html.LabelFor(a => a.FirstName)
+    @Html.TextBoxFor(a => a.FirstName, new {@class="form-control"})
+    @Html.LabelFor(a => a.LastName)
+    @Html.TextBoxFor(a => a.LastName, new {@class="form-control"})
+  </div>
   <input type="submit" value="Add new Author" class="btn btn-warning"/>
 }
-
+<hr>
 <h5>@Html.ActionLink("See all authors", "Index")</h5>

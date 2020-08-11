@@ -4,12 +4,14 @@
 
 @model Library.Models.Author
 
-<h1>Are you sure you want to delete this Author</h1>
+<h2>Are you sure you want to delete this Author</h2>
+<hr>
 
 <h3>@Html.DisplayFor(model => model.FullName)</h3>
 @using (Html.BeginForm())
 {
+  @Html.HiddenFor(model => model.AuthorId)
   <input type="submit" value="Delete" class="btn btn-lg btn-alert" />
 }
-
+<hr>
 <h5>@Html.ActionLink("Back to Authors list", "Index")</h5>

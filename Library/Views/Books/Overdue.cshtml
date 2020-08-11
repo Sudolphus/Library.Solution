@@ -1,0 +1,21 @@
+@{
+  Layout = "_Layout";
+}
+
+@using Library.Models
+@model IEnumerable<Library.Models.BookPatron>
+
+<h2>Books Past Due</h2>
+<hr>
+@if (Model.Any())
+{
+  <ul>
+    @foreach(BookPatron checkout in Model)
+    {
+      <li><p>@Html.ActionLink($"{checkout.Book.Title}", "Details", "Books", new { id = checkout.Book.BookId })</p>
+      <p>Checkout out by: @Html.ActionLink($"{checkout.Patron.FullName}", "Details", "Patrons", new { id = checkout.Patron.PatronId })</p>
+      <p>Due Date: @checkout.DueDate.Date</p></li>
+    }
+  </ul>
+}
+<hr>
