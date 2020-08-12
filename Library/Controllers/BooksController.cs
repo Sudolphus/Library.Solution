@@ -125,10 +125,15 @@ namespace Library.Controllers
 
     [Authorize]
     [HttpPost]
-    public ActionResult Checkin(BookPatron checkoutRecord)
+    public ActionResult Checkin(string BookPatronId)
     {
+      BookPatron checkoutRecord = _db.BookPatron
+        .Include(c => c.Book)
+        .Include(c => c.Patron)
+        .First(c => c.BookPatronId == int.Parse(BookPatronId));
       checkoutRecord.Returned = true;
       checkoutRecord.Book.Number++;
+      _db.Entry(checkoutRecord).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Details", "Patrons", new { id = checkoutRecord.Patron.PatronId });
     }
