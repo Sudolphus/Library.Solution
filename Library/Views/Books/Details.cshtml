@@ -14,6 +14,7 @@
   <h4>@Html.ActionLink($"{join.Author.FullName}", "Details", "Authors", new { id = join.Author.AuthorId })</h4>
 }
 <h4>Number of Copies: @Model.Number</h4>
+
 @using (Html.BeginForm("Checkout", "Books", FormMethod.Post))
 {
   @Html.HiddenFor(model => model.BookId)

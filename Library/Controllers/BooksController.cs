@@ -105,14 +105,15 @@ namespace Library.Controllers
 
     [Authorize]
     [HttpPost]
-    public async Task<ActionResult> Checkout(Book book)
+    public async Task<ActionResult> Checkout(int BookId)
     {
-      var currentUser = await _userManager.FindByIdAsync(this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+      var currentUser = await _userManager.GetUserAsync(User);
+      Book book = _db.Books.First(b => b.BookId == BookId);
       if (book.Number == 0)
       {
         return RedirectToAction("Details", new { id = book.BookId });
       }
-      book.Number--;
+      book.Number = book.Number - 1;
       _db.Entry(book).State = EntityState.Modified;
       DateTime current = DateTime.Now;
       DateTime due = current.Add(new TimeSpan(14, 0, 0, 0));
