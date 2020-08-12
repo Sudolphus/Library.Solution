@@ -25,25 +25,11 @@ namespace Library
 
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddMvc(config =>
-      {
-        var policy = new AuthorizationPolicyBuilder()
-          .RequireAuthenticatedUser()
-          .Build();
-        config.Filters.Add(new AuthorizeFilter(policy));
-      })
-        .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+      services.AddMvc();
 
       services.AddEntityFrameworkMySql()
         .AddDbContext<LibraryContext>(options => options
         .UseMySql(Configuration["ConnectionStrings:DefaultConnection"]));
-
-      services.AddIdentity<ApplicationUser, IdentityRole>()
-        .AddEntityFrameworkStores<LibraryContext>()
-        .AddDefaultTokenProviders();
-
-      services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>()
-        .AddEntityFrameworkStores<LibraryContext>();
 
       services.Configure<IdentityOptions>(options =>
       {
