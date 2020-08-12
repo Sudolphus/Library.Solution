@@ -1,0 +1,18 @@
+@{
+  Layout = "_Layout";
+}
+
+@using Library.Models
+
+<ol>
+  @foreach(Article article in Model)
+  {
+    <ul>
+      <li>Section: @article.Section</li>
+      <li>Title: @article.Title</li>
+      <li>Abstract: @article.Abstract</li>
+      <li>Url: <a href=@article.Url>@article.Url</a></li>
+      <li>Byline: @article.Byline</li>
+    </ul>
+  }
+</ol>
