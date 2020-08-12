@@ -1,10 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Library.Models;
 
 namespace Library.Controllers
@@ -12,10 +16,12 @@ namespace Library.Controllers
   public class BooksController : Controller
   {
     private readonly LibraryContext _db;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public BooksController(LibraryContext db)
+    public BooksController(LibraryContext db, UserManager<ApplicationUser> userManager)
     {
       _db = db;
+      _userManager = userManager;
     }
 
     public ActionResult Index(string title)
@@ -97,21 +103,26 @@ namespace Library.Controllers
       return RedirectToAction("Index");
     }
 
+    [Authorize]
     [HttpPost]
-    public ActionResult Checkout(Book book, Patron patron)
+    public async Task<ActionResult> Checkout(Book book)
     {
+      var currentUser = await _userManager.FindByIdAsync(this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
       if (book.Number == 0)
       {
         return RedirectToAction("Details", new { id = book.BookId });
       }
       book.Number--;
+      _db.Entry(book).State = EntityState.Modified;
       DateTime current = DateTime.Now;
       DateTime due = current.Add(new TimeSpan(14, 0, 0, 0));
+      Patron patron = _db.Patrons.First(p => p.User == currentUser);
       _db.BookPatron.Add(new BookPatron(){BookId = book.BookId, PatronId = patron.PatronId, Returned = false, DueDate = due});
       _db.SaveChanges();
       return RedirectToAction("Details", "Patrons", new { id = patron.PatronId });
     }
 
+    [Authorize]
     [HttpPost]
     public ActionResult Checkin(BookPatron checkoutRecord)
     {
@@ -121,6 +132,7 @@ namespace Library.Controllers
       return RedirectToAction("Details", "Patrons", new { id = checkoutRecord.Patron.PatronId });
     }
 
+    [Authorize]
     public ActionResult Overdue()
     {
       DateTime current = DateTime.Now;
