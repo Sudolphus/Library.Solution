@@ -5,7 +5,6 @@ using Library.Models;
 
 namespace Library.Controllers
 {
-  [Authorize]
   public class ArticlesController : Controller
   {
     public ActionResult Index()

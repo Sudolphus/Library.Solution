@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +25,14 @@ namespace Library
 
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddMvc();
+      services.AddMvc(config =>
+      {
+        var policy = new AuthorizationPolicyBuilder()
+          .RequireAuthenticatedUser()
+          .Build();
+        config.Filters.Add(new AuthorizeFilter(policy));
+      })
+        .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
       services.AddEntityFrameworkMySql()
         .AddDbContext<LibraryContext>(options => options
@@ -32,6 +41,9 @@ namespace Library
       services.AddIdentity<ApplicationUser, IdentityRole>()
         .AddEntityFrameworkStores<LibraryContext>()
         .AddDefaultTokenProviders();
+
+      services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>()
+        .AddEntityFrameworkStores<LibraryContext>();
 
       services.Configure<IdentityOptions>(options =>
       {

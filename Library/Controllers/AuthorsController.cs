@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,7 @@ namespace Library.Controllers
       _db = db;
     }
 
+    [AllowAnonymous]
     public ActionResult Index(string name)
     {
       IQueryable<Author> authorQuery = _db.Authors;

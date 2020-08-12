@@ -24,6 +24,7 @@ namespace Library.Controllers
       _userManager = userManager;
     }
 
+    [AllowAnonymous]
     public ActionResult Index(string title)
     {
       IQueryable<Book> bookQuery = _db.Books
@@ -103,7 +104,6 @@ namespace Library.Controllers
       return RedirectToAction("Index");
     }
 
-    [Authorize]
     [HttpPost]
     public async Task<ActionResult> Checkout(int BookId)
     {
@@ -123,7 +123,6 @@ namespace Library.Controllers
       return RedirectToAction("Details", "Patrons", new { id = patron.PatronId });
     }
 
-    [Authorize]
     [HttpPost]
     public ActionResult Checkin(string BookPatronId)
     {
@@ -138,7 +137,6 @@ namespace Library.Controllers
       return RedirectToAction("Details", "Patrons", new { id = checkoutRecord.Patron.PatronId });
     }
 
-    [Authorize]
     public ActionResult Overdue()
     {
       DateTime current = DateTime.Now;
