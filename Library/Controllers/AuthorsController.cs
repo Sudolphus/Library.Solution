@@ -40,6 +40,7 @@ namespace Library.Controllers
     public ActionResult Create(Author author)
     {
       _db.Authors.Add(author);
+      author.FullName = author.FirstName + " " + author.LastName;
       _db.SaveChanges();
       return RedirectToAction("Details", new { id = author.AuthorId});
     }
@@ -63,6 +64,7 @@ namespace Library.Controllers
     public ActionResult Edit(Author author)
     {
       _db.Entry(author).State = EntityState.Modified;
+      author.FullName = author.FirstName + " " + author.LastName;
       _db.SaveChanges();
       return RedirectToAction("Details", new { id = author.AuthorId });
     }

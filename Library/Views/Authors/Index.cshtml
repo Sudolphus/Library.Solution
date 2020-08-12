@@ -5,8 +5,8 @@
 @using Library.Models
 @model IEnumerable<Library.Models.Author>
 
-<h1>Author List</h1>
-
+<h2>Author List</h2>
+<hr>
 @if(Model.Any())
 {
   <ul>
@@ -20,6 +20,6 @@ else
 {
   <h3>No authors have been added yet.</h3>
 }
-
+<hr>
 <h3>@Html.ActionLink("Add new author", "Create")</h3>
 <h3>@Html.ActionLink("Home", "Index", "Home")</h3>

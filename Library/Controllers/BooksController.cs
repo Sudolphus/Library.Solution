@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -21,8 +22,7 @@ namespace Library.Controllers
     {
       IQueryable<Book> bookQuery = _db.Books
         .Include(books => books.Authors)
-        .ThenInclude(join => join.Author)
-        .Include(books => books.Copies);
+        .ThenInclude(join => join.Author);
       if (!string.IsNullOrEmpty(title))
       {
         Regex titleSearch = new Regex(title, RegexOptions.IgnoreCase);
@@ -41,15 +41,15 @@ namespace Library.Controllers
     }
 
     [HttpPost]
-    public ActionResult Create(Book book, int AuthorId)
+    public ActionResult Create(Book book, string AuthorId)
     {
-      if (AuthorId != 0)
+      _db.Books.Add(book);
+      int parseId = int.Parse(AuthorId);
+      if (parseId != 0)
       {
-        _db.AuthorBook.Add(new AuthorBook() { BookId = book.BookId, AuthorId = AuthorId });
+        _db.AuthorBook.Add(new AuthorBook() { BookId = book.BookId, AuthorId = parseId });
       }
-      Copy copy = new Copy() { Number = 1};
-      _db.Copies.Add(copy);
-      book.CopyId = 
+      book.Number = 1;
       _db.SaveChanges();
       return RedirectToAction("Details", new { id = book.BookId });
     }
@@ -59,7 +59,6 @@ namespace Library.Controllers
       Book book = _db.Books
         .Include(books => books.Authors)
         .ThenInclude(join => join.Author)
-        .Include(books => books.Copies)
         .First(b => b.BookId == id);
       return View(book);
     }
@@ -96,6 +95,43 @@ namespace Library.Controllers
       _db.Books.Remove(book);
       _db.SaveChanges();
       return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public ActionResult Checkout(Book book, Patron patron)
+    {
+      if (book.Number == 0)
+      {
+        return RedirectToAction("Details", new { id = book.BookId });
+      }
+      book.Number--;
+      DateTime current = DateTime.Now;
+      DateTime due = current.Add(new TimeSpan(14, 0, 0, 0));
+      _db.BookPatron.Add(new BookPatron(){BookId = book.BookId, PatronId = patron.PatronId, Returned = false, DueDate = due});
+      _db.SaveChanges();
+      return RedirectToAction("Details", "Patrons", new { id = patron.PatronId });
+    }
+
+    [HttpPost]
+    public ActionResult Checkin(BookPatron checkoutRecord)
+    {
+      checkoutRecord.Returned = true;
+      checkoutRecord.Book.Number++;
+      _db.SaveChanges();
+      return RedirectToAction("Details", "Patrons", new { id = checkoutRecord.Patron.PatronId });
+    }
+
+    public ActionResult Overdue()
+    {
+      DateTime current = DateTime.Now;
+      IEnumerable<BookPatron> overdueBooks = _db.BookPatron
+        .Where(checkout => checkout.Returned == false)
+        .Where(checkout => checkout.DueDate < current)
+        .Include(checkout => checkout.Book)
+        .Include(checkout => checkout.Patron)
+        .ToList()
+        .OrderBy(checkout => checkout.DueDate);
+      return View(overdueBooks);
     }
   }
 }

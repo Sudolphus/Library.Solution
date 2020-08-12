@@ -3,14 +3,16 @@ using System;
 using Library.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Library.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20200811171604_FullName")]
+    partial class FullName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,11 +124,7 @@ namespace Library.Migrations
 
                     b.Property<int>("BookId");
 
-                    b.Property<DateTime>("DueDate");
-
                     b.Property<int>("PatronId");
-
-                    b.Property<bool>("Returned");
 
                     b.HasKey("BookPatronId");
 
@@ -148,11 +146,7 @@ namespace Library.Migrations
 
                     b.Property<string>("LastName");
 
-                    b.Property<string>("UserId");
-
                     b.HasKey("PatronId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Patrons");
                 });
@@ -288,13 +282,6 @@ namespace Library.Migrations
                         .WithMany("Books")
                         .HasForeignKey("PatronId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Library.Models.Patron", b =>
-                {
-                    b.HasOne("Library.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

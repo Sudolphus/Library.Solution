@@ -5,13 +5,16 @@
 @using Library.Models
 @model Library.Models.Book
 
-<h1>Book Details</h1>
+<h2>Book Details</h2>
 
 <h3>@Model.Title</h3>
-
+<hr>
 @foreach(AuthorBook join in Model.Authors)
 {
   <h4>@Html.ActionLink($"{join.Author.FullName}", "Details", "Authors", new { id = join.Author.AuthorId })</h4>
 }
-
+<h4>Number of Copies: @Model.Number</h4>
+<hr>
 <p>@Html.ActionLink("Book Index", "Index")</p>
+<p>@Html.ActionLink("Edit this Book", "Edit", new { id = Model.BookId })</p>
+<p>@Html.ActionLink("Delete this book", "Delete", new { id = Model.BookId })</p>

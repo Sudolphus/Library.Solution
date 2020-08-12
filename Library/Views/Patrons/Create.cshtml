@@ -5,14 +5,16 @@
 @model Library.Models.Patron
 
 <h2>Add a new Patron</h2>
-
+<hr>
 @using (Html.BeginForm())
 {
-  @Html.LabelFor(p => p.FirstName)
-  @Html.TextBoxFor(p => p.FirstName)
-  @Html.LabelFor(p => p.LastName)
-  @Html.TextBoxFor(p => p.LastName)
+  <div class="form-group">
+    @Html.LabelFor(p => p.FirstName)
+    @Html.TextBoxFor(p => p.FirstName, new {@class="form-control"})
+    @Html.LabelFor(p => p.LastName)
+    @Html.TextBoxFor(p => p.LastName, new {@class="form-control"})
+  </div>
   <input type="submit" value="Add new Patron" class="btn btn-warning"/>
 }
-
+<hr>
 <h5>@Html.ActionLink("See all patrons", "Index")</h5>

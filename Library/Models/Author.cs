@@ -7,12 +7,11 @@ namespace Library.Models
     public Author()
     {
       this.Books = new HashSet<AuthorBook>();
-      FullName = FirstName + " " + LastName;
     }
     public int AuthorId { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public string FullName { get; }
+    public string FullName { get; set; }
     public ICollection<AuthorBook> Books { get; set; }
   }
 }
