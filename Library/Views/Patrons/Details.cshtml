@@ -13,7 +13,12 @@
   <ul>
     @foreach(BookPatron checkout in ViewBag.Checkouts)
     {
-      <li>@Html.ActionLink($"{checkout.Book.Title}", "Details", "Books", new { id = checkout.Book.BookId }) | Due: @checkout.DueDate.Date</li>
+      <li>@Html.ActionLink($"{checkout.Book.Title}", "Details", "Books", new { id = checkout.Book.BookId }) | Due: @checkout.DueDate.Date.ToString("d")
+      @using (Html.BeginForm("Checkin", "Books", FormMethod.Post))
+      {
+        <input type="text" name="BookPatronId" value=@checkout.BookPatronId class="hidden" />
+        <input type="submit" value="Checkin" class="btn btn-success" />
+      }</li>
     }
   </ul>
 }
@@ -28,7 +33,7 @@ else
   <ul>
     @foreach(BookPatron history in ViewBag.History)
     {
-      <li>@Html.ActionLink($"{history.Book.Title}", "Details", "Books", new { id = history.Book.BookId}) | Returned: @history.DueDate.Date</li>
+      <li>@Html.ActionLink($"{history.Book.Title}", "Details", "Books", new { id = history.Book.BookId}) | Returned: @history.DueDate.Date.ToString("d")</li>
     }
   </ul>
 }

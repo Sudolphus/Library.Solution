@@ -13,7 +13,6 @@ using Library.Models;
 
 namespace Library.Controllers
 {
-  [Authorize]
   public class PatronsController : Controller
   {
     private readonly LibraryContext _db;
